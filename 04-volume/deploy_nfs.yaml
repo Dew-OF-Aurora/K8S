@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx-pv-demo
+  name: nginx-pv-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx-pv-demo
+  template:
+    metadata:
+      labels:
+        app: nginx-pv-demo
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        volumeMounts:
+        - name: html #挂载名
+          mountPath: /usr/share/nginx/html ##内部挂载目录
+      volumes:
+        - name: html #挂载名
+          nfs:
+            server: 192.168.226.50 ##服务器
+            path: /nfs/data/nginx-pv #挂载路径
